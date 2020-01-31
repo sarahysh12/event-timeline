@@ -1,0 +1,9 @@
+<h2>Start editing to see some magic happen</h2>
+<h3>{{timelineSize}} timeline items to render</h3>
+
+<div>
+    <span *ngFor="let event of timeLineEvents; let i = index" class="bar">
+        <br *ngIf="i > 0 && timeLineEvents[i].start < timeLineEvents[i-1].end" />
+        {{event.name}} {{event.start}} {{event.end}}
+    </span>
+</div>
