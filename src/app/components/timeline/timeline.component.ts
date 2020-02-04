@@ -19,6 +19,7 @@ export class TimelineComponent implements OnInit {
 
   private rangeStart: Date;
   private rangeEnd: Date;
+  private months: number;
 
   constructor() { }
 
@@ -27,7 +28,9 @@ export class TimelineComponent implements OnInit {
     this.timelineSize = timelineItems.length;
     this.categorizeEvents(this.timeLineEvents);
     this.getEventsRange(this.timeLineEvents);
-    //TODO sort events
+    this.months = this.calculateMonths(this.rangeStart, this.rangeEnd);
+    
+    //TODO do we need sort events???
   }
 
   categorizeEvents(events: TimelineEvent[]){
@@ -61,6 +64,16 @@ export class TimelineComponent implements OnInit {
       }
     });
   }
+
+  calculateMonths(start: Date, end: Date) {
+    start = new Date(start);
+    end = new Date(end);
+    let months;
+    months = (end.getFullYear() - start.getFullYear()) * 12;
+    months -= start.getMonth() + 1;
+    months += end.getMonth();
+    return months <= 0 ? 0 : months;
+}
 
 
   printEvents(){
