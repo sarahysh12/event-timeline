@@ -1,9 +1,14 @@
-<h2>Start editing to see some magic happen</h2>
-<h3>{{timelineSize}} timeline items to render</h3>
+<h2>{{timelineSize}} timeline items to render</h2>
 
 <div>
-    <span *ngFor="let event of timeLineEvents; let i = index" class="bar">
-        <br *ngIf="i > 0 && timeLineEvents[i].start < timeLineEvents[i-1].end" />
+    <span *ngFor="let event of sequentialEvents; let i = index" class="bar">
+        {{event.name}} {{event.start}} {{event.end}}
+    </span>
+</div>
+
+<br/>
+<div>
+    <span *ngFor="let event of overlappedEvents; let i = index" class="overlapped-bar">
         {{event.name}} {{event.start}} {{event.end}}
     </span>
 </div>

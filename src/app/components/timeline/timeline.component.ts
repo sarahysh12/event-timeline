@@ -12,65 +12,44 @@ export class TimelineComponent implements OnInit {
 
   timelineSize: string;
   timeLineEvents: TimelineEvent[];
-  categories: any[] = [];
-  events: TimelineEvent[] = [];
+
+  overlappedEvents: TimelineEvent[] = [];
+  sequentialEvents: TimelineEvent[] = [];
 
   constructor() { }
 
   ngOnInit() {
     this.timeLineEvents = timelineItems;
     this.timelineSize = timelineItems.length;
-
-    this.sortDates(this.timeLineEvents);
-
-
-    // this.timeLineEvents.forEach(element => {
-    //   // console.log(this.categories);
-    //   // console.log('--------------------');
-    //   // First element
-    //   if (this.categories.length === 0) {
-    //     this.events.push(element);
-    //     this.categories.push(this.events);
-    //     console.log(this.categories);
-    //     console.log('**********');
-    //   } else {
-    //     for (const category of this.categories) {
-    //       for (const event of category) {
-    //         if (element.start < event.end) {
-    //           this.events = [element];
-    //           this.categories.push(this.events);
-    //           break;
-    //         } else {
-    //           category.push(element);
-    //         }
-    //       }
-    //     }
-
-    //   }
-
-    // });
-
+    this.categorizeEvents(this.timeLineEvents);
   }
 
-
-
-  //TODO type??
-  sortDates(events: TimelineEvent[]) {
-    console.log(JSON.stringify(events));
-    console.log('---------------------');
-    for (let i = 1; i < events.length; i++) {
-      let key = events[i];
-      console.log(key);
-      let j = i - 1;
-      while (events[j].start > key.start && j >= 0) {
-        events[j + 1] = events[j];
-        j -= 1;
-      }
-      events[j + 1] = key;
+  categorizeEvents(events: TimelineEvent[]){
+    events.forEach(event => {
+      let isOverlapped = false;
+      if (this.sequentialEvents.length > 0){
+        for(let item of this.sequentialEvents){
+          if (event.start >= item.start && event.start <= item.end  || event.end >= item.start && event.end <= item.end ){
+            this.overlappedEvents.push(event);
+            isOverlapped = true;
+            break;
+          }
     }
-    // console.log(events);
-    // console.log(new Date(events[0].start) < new Date(events[1].start));
+  }
+    if(!isOverlapped)
+      this.sequentialEvents.push(event);
+    });
+  }
 
+  printEvents(){
+    console.log('------------NORMAL----------------');
+    this.sequentialEvents.forEach(n =>{
+      console.log(n.start, n.end);
+    })
+    console.log('------------OVERLAPPED----------------');
+    this.overlappedEvents.forEach(o =>{
+      console.log(o.start, o.end);
+    })
   }
 
 }

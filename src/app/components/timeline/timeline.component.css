@@ -6,7 +6,10 @@
   }
   
   
-  .row-bar {
-  
+  .overlapped-bar {
+    width: 10px;
+    height: 30px;
+    background-color: lightseagreen;
+    margin-left: 10px;
   }
   
