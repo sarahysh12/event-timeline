@@ -6,7 +6,8 @@ Design and implement a component for visualizing events on a timeline.
 
 Your timeline layout should arrange events in a compact space-efficient way: generally speaking, if event A ends before event B starts, the bars for those events can share the same horizontal lane, instead of existing on separate lanes. You may want to slightly relax this constraint to fit in the name of the event (for example, if the event's bar is too short, or the event's name is too long).
 
-The input to the component should be an array of events, where each event has a name, start date, and end date.
+
+??????????????The input to the component should be an array of events, where each event has a name, start date, and end date.????????????????
 
 The start and end dates will be formatted as YYYY-MM-DD date strings, for example: “2018-12-23”. You don't need to worry about hours, minutes, seconds, or time zones.
 
@@ -18,7 +19,7 @@ After you have a basic read-only timeline showing up, here are some potential im
 
 * Allow zooming in and out of the timeline.
 * Allow dragging and dropping to change the start date and/or end date for an event.
-* Allow editing the name of events inline.
+* Allow editing the name of events inline.??????????????????  should we store it??
 * Any other polish or useful enhancements you can think of.
 
 Include a README that covers:

@@ -16,12 +16,18 @@ export class TimelineComponent implements OnInit {
   overlappedEvents: TimelineEvent[] = [];
   sequentialEvents: TimelineEvent[] = [];
 
+
+  private rangeStart: Date;
+  private rangeEnd: Date;
+
   constructor() { }
 
   ngOnInit() {
     this.timeLineEvents = timelineItems;
     this.timelineSize = timelineItems.length;
     this.categorizeEvents(this.timeLineEvents);
+    this.getEventsRange(this.timeLineEvents);
+    //TODO sort events
   }
 
   categorizeEvents(events: TimelineEvent[]){
@@ -40,6 +46,22 @@ export class TimelineComponent implements OnInit {
       this.sequentialEvents.push(event);
     });
   }
+
+  getEventsRange(events: TimelineEvent[]){
+    events.forEach(event => {
+      if (!this.rangeEnd && !this.rangeStart){
+        this.rangeStart = event.start;
+        this.rangeEnd = event.end;
+      } 
+      else{
+        if (event.start < this.rangeStart)
+          this.rangeStart = event.start;
+        if (event.end > this.rangeEnd)
+          this.rangeEnd = event.end;;
+      }
+    });
+  }
+
 
   printEvents(){
     console.log('------------NORMAL----------------');
