@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import timelineItems from './timelineItems';
 import { TimelineEvent } from 'src/app/models/timeline-event';
-
 @Component({
   selector: 'app-timeline',
   templateUrl: './timeline.component.html',
@@ -26,65 +25,43 @@ export class TimelineComponent implements OnInit {
   ngOnInit() {
     this.timeLineEvents = timelineItems;
     this.timelineSize = timelineItems.length;
-    this.categorizeEvents(this.timeLineEvents);
-    this.getEventsRange(this.timeLineEvents);
-    this.months = this.calculateMonths(this.rangeStart, this.rangeEnd);
-    
-    //TODO do we need sort events???
+    this.sortEvents();
+    console.log(this.findNumberOfRows());
   }
 
-  categorizeEvents(events: TimelineEvent[]){
-    events.forEach(event => {
-      let isOverlapped = false;
-      if (this.sequentialEvents.length > 0){
-        for(let item of this.sequentialEvents){
-          if (event.start >= item.start && event.start <= item.end  || event.end >= item.start && event.end <= item.end ){
-            this.overlappedEvents.push(event);
-            isOverlapped = true;
-            break;
-          }
+
+  sortEvents() {
+    //TODO do I need to sort by end if starts are the same
+    let i = 1;
+    let j = 0;
+    for (i = 0; i < this.timeLineEvents.length; i++) {
+      let key = this.timeLineEvents[i];
+      j = i - 1;
+      while (j >= 0 && key.start < this.timeLineEvents[j].start) {
+        this.timeLineEvents[j + 1] = this.timeLineEvents[j]
+        j -= 1
+      }
+      this.timeLineEvents[j + 1] = key;
     }
   }
-    if(!isOverlapped)
-      this.sequentialEvents.push(event);
-    });
-  }
 
-  getEventsRange(events: TimelineEvent[]){
-    events.forEach(event => {
-      if (!this.rangeEnd && !this.rangeStart){
-        this.rangeStart = event.start;
-        this.rangeEnd = event.end;
-      } 
-      else{
-        if (event.start < this.rangeStart)
-          this.rangeStart = event.start;
-        if (event.end > this.rangeEnd)
-          this.rangeEnd = event.end;;
+  findNumberOfRows() {
+    // let intervals = [[1, 2], [1, 2], [1, 2]];
+    let count = 0
+    let i = 0;
+    for (i = 0; i < this.timeLineEvents.length - 1; i++) {
+      if (this.timeLineEvents[i].end > this.timeLineEvents[i + 1].start) {
+        if (this.timeLineEvents[i].end > this.timeLineEvents[i + 1].end) {
+          this.timeLineEvents[i + 1].end = this.timeLineEvents[i + 1].end;
+        }
+        else {
+          this.timeLineEvents[i + 1].end = this.timeLineEvents[i].end;
+        }
+        count += 1;
       }
-    });
-  }
+    }
+    return count;
 
-  calculateMonths(start: Date, end: Date) {
-    start = new Date(start);
-    end = new Date(end);
-    let months;
-    months = (end.getFullYear() - start.getFullYear()) * 12;
-    months -= start.getMonth() + 1;
-    months += end.getMonth();
-    return months <= 0 ? 0 : months;
-}
-
-
-  printEvents(){
-    console.log('------------NORMAL----------------');
-    this.sequentialEvents.forEach(n =>{
-      console.log(n.start, n.end);
-    })
-    console.log('------------OVERLAPPED----------------');
-    this.overlappedEvents.forEach(o =>{
-      console.log(o.start, o.end);
-    })
   }
 
 }

@@ -6,13 +6,13 @@
     </span>
 </div>
 
-<br/>
+<br />
 <div>
     <span *ngFor="let event of overlappedEvents; let i = index" class="overlapped-bar">
         {{event.name}} {{event.start}} {{event.end}}
     </span>
 </div>
-
-<!-- <div class="row">
-    <div *ngFor="let element in Array(months); let i = index">hello {{i}}</div>
-  </div> -->
+<!-- 
+<div class="row">
+    <span class="column" *ngFor="let number of months">{{number}}</span>
+</div> -->
